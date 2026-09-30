@@ -1,28 +1,226 @@
 <!DOCTYPE html><html><head>
     <title>Ejemplo</title><meta charset="utf-8">
     <script type="text/javascript">
+
+    // Variables globales
+    let operando1 = 0;
+    let operacion = "";
     
-    function vaciar () {
+
+    const vaciar = () => {
       document.getElementById("n1").value = "";
     }
-    
-    function cuadrado() {
-      let num = document.getElementById("n1");
-      num.value = num.value * num.value;
+
+
+    const cuadrado = () => {
+      try {
+        let num = document.getElementById("n1");
+        if (Number(num.value)) {
+          num.value = num.value * num.value;
+          fill_info();
+        } else {
+          throw ("No se ha detectado un número");
+        }
+      } catch (error) {
+        document.getElementById("info").innerHTML = "Error: " + error;
+      }
     }
     
-    function inverso() {
-      let num = document.getElementById("n1");
-      num.value = 1/num.value;
+
+    const inverso = () => {
+      try {
+        let num = document.getElementById("n1");
+        if (num.value === "0") {
+          throw ("No se puede dividir entre 0");
+        }
+        if (Number(num.value)) {
+          num.value = 1 / num.value;
+          fill_info();
+        } else {
+          throw ("No se ha detectado un número");
+        }
+      } catch (error) {
+        document.getElementById("info").innerHTML = "Error: " + error;
+      }
     }
+        
+  
+    const mod = () => {
+      try {
+        let num = document.getElementById("n1");
+        let x = Number(num.value);
+        if (Number(num.value)) {
+          if (x < 0) {
+            num.value = -x;
+          } else {
+            num.value = x;
+          }
+          fill_info();
+        } else {
+          throw ("No se ha detectado un número");
+        }
+      } catch (error) {
+        document.getElementById("info").innerHTML = "Error: " + error;
+      }
+    }
+
+    const fact = () => {
+      try {
+        let num = document.getElementById("n1");
+        let x = Number(num.value);
+        if (x<0) {                                           
+          throw ("No existe el factorial de un número negativo");
+        }
+        if (Number(num.value)) {
+          let resultado = 1;
+          for (let i = 2; i <= x; i++) {
+            resultado = resultado * i;
+          }
+          num.value = resultado;
+          fill_info();
+        } else {
+          throw ("No se ha detectado un número");
+        }
+      } catch (error) {
+        document.getElementById("info").innerHTML = "Error: " + error;
+      }
+    }
+
+    const cubo = () => {
+      try {
+        let num = document.getElementById("n1");
+        if (Number(num.value)) {
+          num.value = num.value * num.value * num.value;
+          fill_info();
+        } else {
+          throw ("No se ha detectado un número");
+        }
+      } catch (error) {
+        document.getElementById("info").innerHTML = "Error: " + error;
+      }
+    }
+
+    // Función que guarda el primer operando y la operación elegida
+    const guardar = (op) => {
+      let num=document.getElementById("n1");  
+      operando1 = Number(num.value);
+      operacion=op;
+      num.value="";
+    }
+
+    const eq = () => {
+      let num=document.getElementById("n1");
+      let operando2=Number(num.value);
+
+      if (operacion === "+"){
+        num.value = operando1 + operando2;
+      } else if (operacion === "*"){
+        num.value = operando1 * operando2;
+      }
+      fill_info();
+
+    }
+
+    const multiplication = () => {
+      guardar("*")
+    }
+
+    const addition = () => {
+      guardar("+")
+    }
+
+    const sum = () => {
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      let total = 0;
+
+      for(let i=0; i<lista.length;i++){
+        total=total + Number(lista[i])
+      }
+
+      num.value=total;
+      fill_info();
+
+    }
+
+    const sort = () => {
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      lista.sort((a,b) => a-b);
+      num.value=lista.join(",");
+      document.getElementById("info").innerHTML = `Info: La lista ordenada de menor a mayor es ${num.value}`;
+    }
+
+    const reverse = () => {
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      lista.reverse();
+      num.value=lista.join(",")
+      document.getElementById("info").innerHTML = `Info: La lista ordenada de forma invertida es ${num.value}`;
+    }
+
+    const removelast = () => {
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      lista.pop();
+      num.value=lista.join(",")
+      document.getElementById("info").innerHTML = `Info: Se ha eliminado el último elemento. La lista queda: ${num.value}`;
+    }
+
+    const media =() => {
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      let total = 0;
+
+      for(let i=0; i<lista.length;i++){
+        total=(total + Number(lista[i]))
+      }
+
+      num.value=total/lista.length;
+      fill_info();
+    }
+
+
+    const fill_info = () => {                        
+      let num = document.getElementById("n1");         
+      let info = document.getElementById("info");      
+      let resultado = Number(num.value);  
+    
+
+        if (resultado < 100) {
+        info.innerHTML = `Info: El resultado es ${resultado}, menor que 100`;
+      } else if (resultado <= 200){
+        info.innerHTML=`Info: El resultado es ${resultado}, esta entre 100 y 200`;
+      } else {
+        info.innerHTML=`Info: El resultado es ${resultado}, es mayor que 200`;
+      } 
+    }
+
     </script>
     </head>
+
     <body>
     
       Número:
       <input type="text" id="n1" onclick="vaciar()">
       <br><br>
       <button onclick="cuadrado()">x<sup>2</sup></button>
-      <button onclick="inverso()"> 1/x </button>  
+      <button onclick="inverso()"> 1/x </button>
+      <button onclick="mod()"> | x | </button>  
+      <button onclick="fact()" > n! </button>
+      <button onclick="cubo()">x<sup>3</sup></button>
+      <button onclick="addition()">+</button>
+      <button onclick="multiplication()">x</button>
+      <button onclick="eq()"> = </button>
+      <button onclick="sum()">Suma</button>
+      <button onclick="sort()">Ordena</button>
+      <button onclick="reverse()">Invierte</button>
+      <button onclick="removelast()">Elimina último</button>
+      <button onclick="media()">Media </button>
+
+
+      
+
+      <h2 id="info" class="big" title="Información sobre el número"> Información sobre el número: </h2>
     </body>
     </html>
