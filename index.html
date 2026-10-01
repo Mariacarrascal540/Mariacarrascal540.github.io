@@ -1,18 +1,50 @@
 <!DOCTYPE html><html><head>
+  <style>
+    body{
+      font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      background-color: rgb(216, 197, 200);
+    }
+
+    .calculadora {
+      background-color: rgb(246, 222, 226);
+      width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .botones {
+      display: flex;
+    }
+
+    button {
+      margin: 4px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 1px;
+      border-radius: 6px;
+      background-color: pink;
+      color: rgb(45, 129, 111);
+    }
+
+    .big {
+      color: pink;
+      font-size: 40px;
+    }
+
+  </style>
+
     <title>Ejemplo</title><meta charset="utf-8">
     <script type="text/javascript">
 
     // Variables globales
     let operando1 = 0;
     let operacion = "";
-
+    
 
     const vaciar = () => {
       document.getElementById("n1").value = "";
     }
 
-
-    // Función que comprueba que todo lo que hay en la caja son números
     const validate = () => {
       let texto = document.getElementById("n1").value;
       let info = document.getElementById("info");
@@ -46,7 +78,7 @@
       num.value = num.value * num.value;
       fill_info();
     }
-
+    
 
     const inverso = () => {
       if (validate() === false) {
@@ -63,8 +95,7 @@
         document.getElementById("info").innerHTML = "Error: " + error;
       }
     }
-
-
+        
     const mod = () => {
       if (validate() === false) {
         return;
@@ -77,8 +108,9 @@
         num.value = x;
       }
       fill_info();
+    
     }
-
+    
 
     const fact = () => {
       if (validate() === false) {
@@ -104,7 +136,6 @@
       }
     }
 
-
     const cubo = () => {
       if (validate() === false) {
         return;
@@ -114,8 +145,6 @@
       fill_info();
     }
 
-
-    // Función que guarda el primer operando y la operación elegida
     const guardar = (op) => {
       if (validate() === false) {
         return;
@@ -149,92 +178,92 @@
     }
 
     const multiplication = () => {
-      guardar("*");
+      guardar("*")
     }
 
     const addition = () => {
-      guardar("+");
+      guardar("+")
     }
 
-
     const sum = () => {
-      if (validate() === false) {
-        return;
-      }
-      let num = document.getElementById("n1");
-      let lista = num.value.split(",");
-      let total = 0;
+        if (validate() === false) {
+            return;
+        }
+        let num = document.getElementById("n1");
+        let lista = num.value.split(",");
+        let total = 0;
 
-      for (let i = 0; i < lista.length; i++) {
-        total = total + Number(lista[i]);
-      }
+        for (let i = 0; i < lista.length; i++) {
+            total = total + Number(lista[i]);
+        }
 
-      num.value = total;
-      fill_info();
+        num.value = total;
+        fill_info();
     }
 
     const sort = () => {
-      if (validate() === false) {
-        return;
-      }
-      let num = document.getElementById("n1");
-      let lista = num.value.split(",");
-      lista.sort((a, b) => a - b);
-      num.value = lista.join(",");
-      document.getElementById("info").innerHTML = `Info: La lista ordenada de menor a mayor es ${num.value}`;
+        if (validate() === false) {
+            return;
+        }
+        let num = document.getElementById("n1");
+        let lista = num.value.split(",");
+        lista.sort((a, b) => a - b);
+        num.value = lista.join(",");
+        document.getElementById("info").innerHTML = `Info: La lista ordenada de menor a mayor es ${num.value}`;
     }
 
     const reverse = () => {
-      if (validate() === false) {
-        return;
-      }
-      let num = document.getElementById("n1");
-      let lista = num.value.split(",");
-      lista.reverse();
-      num.value = lista.join(",");
-      document.getElementById("info").innerHTML = `Info: La lista invertida es ${num.value}`;
+        if (validate() == false ) {
+            return;
+        }
+        let num = document.getElementById("n1");
+        let lista = num.value.split(",");
+        lista.reverse();
+        num.value=lista.join(",")
+        document.getElementById("info").innerHTML = `Info: La lista ordenada de forma invertida es ${num.value}`;
     }
 
     const removelast = () => {
-      if (validate() === false) {
-        return;
-      }
-      let num = document.getElementById("n1");
-      let lista = num.value.split(",");
-      lista.pop();
-      num.value = lista.join(",");
-      document.getElementById("info").innerHTML = `Info: Se ha eliminado el último elemento. La lista queda: ${num.value}`;
+        if (validate() == false ) {
+            return;
+        }
+        let num = document.getElementById("n1");
+        let lista = num.value.split(",");
+        lista.pop();
+        num.value=lista.join(",")
+        document.getElementById("info").innerHTML = `Info: Se ha eliminado el último elemento. La lista queda: ${num.value}`;
     }
 
-    const media = () => {
-      if (validate() === false) {
-        return;
-      }
-      let num = document.getElementById("n1");
-      let lista = num.value.split(",");
-      let total = 0;
+    const media =() => {
+        if (validate() == false ) {
+            return;
+        }
+        let num = document.getElementById("n1");
+        let lista = num.value.split(",");
+        let total = 0;
 
-      for (let i = 0; i < lista.length; i++) {
-        total = total + Number(lista[i]);
-      }
+        for(let i=0; i<lista.length;i++){
+            total=(total + Number(lista[i]))
+        }
 
-      num.value = total / lista.length;
-      fill_info();
-    }
+        num.value=total/lista.length;
+        fill_info();
+        }
 
 
-    const fill_info = () => {
-      let num = document.getElementById("n1");
-      let info = document.getElementById("info");
-      let resultado = Number(num.value);
+    const fill_info = () => {                        
+      let num = document.getElementById("n1");         
+      let info = document.getElementById("info");      
+      let resultado = Number(num.value);  
+    
 
-      if (resultado < 100) {
+        if (resultado < 100) {
         info.innerHTML = `Info: El resultado es ${resultado}, menor que 100`;
-      } else if (resultado <= 200) {
-        info.innerHTML = `Info: El resultado es ${resultado}, está entre 100 y 200`;
+      } else if (resultado <= 200){
+        info.innerHTML=`Info: El resultado es ${resultado}, esta entre 100 y 200`;
       } else {
-        info.innerHTML = `Info: El resultado es ${resultado}, es mayor que 200`;
-      }
+        info.innerHTML=`Info: El resultado es ${resultado}, es mayor que 200`;
+      } 
     }
 
     </script>
@@ -245,16 +274,17 @@
 
             <h1>Calculadora pequeña</h1>
 
+    
             Número:
-            <input type="text" id="n1" onclick="vaciar()" title="Escribe un número o una lista separada por comas">
+            <input type="text" id="n1" onclick="vaciar()">
             <br><br>
 
             <h3>Operaciones unarias</h3>
             <div class="botones">
                 <button onclick="cuadrado()">x<sup>2</sup></button>
                 <button onclick="inverso()"> 1/x </button>
-                <button id="modulo" onclick="mod()"> | x | </button>
-                <button id="factorial" onclick="fact()"> n! </button>
+                <button id="modulo" onclick="mod()"> | x | </button>  
+                <button id="factorial" onclick="fact()" > n! </button>
                 <button onclick="cubo()">x<sup>3</sup></button>
             </div>
 
@@ -271,10 +301,10 @@
                 <button onclick="sort()">Ordena</button>
                 <button onclick="reverse()">Invierte</button>
                 <button onclick="removelast()">Elimina último</button>
-                <button onclick="media()">Media</button>
+                <button onclick="media()">Media </button>
             </div>
 
-            <h2 id="info" class="big" title="Información sobre el número">Información sobre el número</h2>
+            <h2 id="info" class="big" title="Información sobre el número"> Información sobre el número </h2>
         </div>
     </body>
 </html>
