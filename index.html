@@ -45,7 +45,7 @@
       document.getElementById("n1").value = "";
     }
 
-    const validate = () => {
+    const validate = (tipo) => {
       let texto = document.getElementById("n1").value;
       let info = document.getElementById("info");
 
@@ -55,6 +55,11 @@
         }
 
         let lista = texto.split(",");
+
+        if (tipo=="numero" && lista.length > 1) {
+          throw("Esta operación solo funciona con un número, no con una lista")
+        }
+
         for (let i = 0; i < lista.length; i++) {
           if (lista[i] === "" || isNaN(lista[i])) {
             throw (`"${lista[i]}" no es un número válido`);
@@ -71,7 +76,7 @@
 
 
     const cuadrado = () => {
-      if (validate() === false) {
+      if (validate("numero") === false) {
         return;
       }
       let num = document.getElementById("n1");
@@ -81,7 +86,7 @@
     
 
     const inverso = () => {
-      if (validate() === false) {
+      if (validate("numero") === false) {
         return;
       }
       try {
@@ -97,7 +102,7 @@
     }
         
     const mod = () => {
-      if (validate() === false) {
+      if (validate("numero") === false) {
         return;
       }
       let num = document.getElementById("n1");
@@ -113,7 +118,7 @@
     
 
     const fact = () => {
-      if (validate() === false) {
+      if (validate("numero") === false) {
         return;
       }
       try {
@@ -137,7 +142,7 @@
     }
 
     const cubo = () => {
-      if (validate() === false) {
+      if (validate("numero") === false) {
         return;
       }
       let num = document.getElementById("n1");
@@ -146,7 +151,7 @@
     }
 
     const guardar = (op) => {
-      if (validate() === false) {
+      if (validate("numero") === false) {
         return;
       }
       let num = document.getElementById("n1");
@@ -156,7 +161,7 @@
     }
 
     const eq = () => {
-      if (validate() === false) {
+      if (validate("numero") === false) {
         return;
       }
       try {
@@ -186,7 +191,7 @@
     }
 
     const sum = () => {
-        if (validate() === false) {
+        if (validate("lista") === false) {
             return;
         }
         let num = document.getElementById("n1");
@@ -202,7 +207,7 @@
     }
 
     const sort = () => {
-        if (validate() === false) {
+        if (validate("lista") === false) {
             return;
         }
         let num = document.getElementById("n1");
@@ -213,7 +218,7 @@
     }
 
     const reverse = () => {
-        if (validate() == false ) {
+        if (validate("lista") === false ) {
             return;
         }
         let num = document.getElementById("n1");
@@ -224,7 +229,7 @@
     }
 
     const removelast = () => {
-        if (validate() == false ) {
+        if (validate("lista") === false ) {
             return;
         }
         let num = document.getElementById("n1");
@@ -235,7 +240,7 @@
     }
 
     const media =() => {
-        if (validate() == false ) {
+        if (validate("lista") === false ) {
             return;
         }
         let num = document.getElementById("n1");
