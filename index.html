@@ -46,10 +46,18 @@
     <title>Calculadora pequeña</title><meta charset="utf-8">
     <script type="text/javascript">
 
+    document.addEventListener("click", (ev) => {
+      if (ev.target.matches("button")) {
+        resaltar(ev.target);
+      } else if (ev.target.matches("button sup")) {
+        resaltar(ev.target.parentElement);
+      }
+    });
+
     // Variables globales
     let operando1 = 0;
     let operacion = "";
-
+    let ultimoBoton;
     let registroErrores=[];
     
 
@@ -68,7 +76,7 @@
 
         let lista = texto.split(",");
 
-        if (tipo=="numero" && lista.length > 1) {
+        if (tipo==="numero" && lista.length > 1) {
           throw("Esta operación solo funciona con un número, no con una lista")
         }
 
@@ -176,7 +184,7 @@
         let x = Number(num.value);
 
         if (x<0) {
-          throw ("El número es negativo no existe su raiz cuadrada");
+          throw ("El número es negativo no existe su raíz cuadrada");
         }
         num.value = Math.sqrt(x);
         document.getElementById("info").innerHTML =  `Info: Operación: Raíz Cuadrada: El número ${x} es positivo y su raíz es ${num.value}`;
@@ -205,7 +213,7 @@
         let num = document.getElementById("n1");
         let operando2 = Number(num.value);
         if (operacion === "") {
-          throw ("Primero tienes que elegir una operación (+ / x / -)");
+          throw ("Primero tienes que elegir una operación (+ / x / - / ÷)");
         }
         if (operacion === "+") {
           num.value = operando1 + operando2;
@@ -285,7 +293,7 @@
         let lista = num.value.split(",");
         lista.reverse();
         num.value=lista.join(",")
-        document.getElementById("info").innerHTML = `Info: La lista ordenada de forma invertida es ${num.value}`;
+        document.getElementById("info").innerHTML = `Info: La lista invertida es ${num.value}`;
     }
 
 
@@ -378,6 +386,14 @@
       }
     }
 
+    const resaltar  =(boton) => {
+      if(ultimoBoton !== undefined) {
+        ultimoBoton.style.backgroundColor="";
+      }
+      boton.style.backgroundColor="palevioletred"
+      ultimoBoton=boton
+    }
+
     const registrarError = (error) => {
       let date = new Date();
       let fecha = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
@@ -393,24 +409,28 @@
     document.getElementById("info").innerHTML = "Errores registrados:<br>" + registroErrores.join("<br>");
   }
 
-    // Para poder manejarlo desde el teclado
-    document.addEventListener("keydown",(ev) =>{
+    document.addEventListener("keydown", (ev) => {
 
-      if(ev.key === "Enter") {
+      if (ev.key === "Enter" && ev.target.matches("#n1")) {
         eq();
       }
 
-      if(ev.key==="*") {
+      if (ev.key === "*") {
         ev.preventDefault();
         multiplication();
       }
 
-      if(ev.key ==="+") {
+      if (ev.key === "+") {
         ev.preventDefault();
         addition();
       }
-    }
-  );
+
+      if (ev.key === "/") {
+        ev.preventDefault();
+        division();
+      }
+      }
+    );
 
     </script>
     </head>
