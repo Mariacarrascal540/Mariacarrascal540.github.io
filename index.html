@@ -1,7 +1,10 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html>
+<html>
+
+<head>
   <style>
-    body{
-      font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    body {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       background-color: rgb(216, 197, 200);
     }
 
@@ -42,43 +45,36 @@
       width: 35px;
       height: 25px;
       margin: 4px;
-  }
+    }
 
     #botonAyuda {
-    float: right;
-  }
+      float: right;
+    }
 
     #ayuda {
-    font-size: 13px;
-    background-color: white;
-    padding: 10px;
-    border-radius: 6px;
-  }
-
+      font-size: 13px;
+      background-color: white;
+      padding: 10px;
+      border-radius: 6px;
+    }
   </style>
 
-    <title>Calculadora pequeña</title><meta charset="utf-8">
-    <script type="text/javascript">
-
-  document.addEventListener("click", (ev) => {
-      if (ev.target.matches("button")) {
-        resaltar(ev.target);
-      }
-    }
-  );
+  <title>Calculadora pequeña</title>
+  <meta charset="utf-8">
+  <script type="text/javascript">
 
     // Variables globales
     let operando1 = 0;
     let operacion = "";
     let ultimoBoton;
-    let registroErrores=[];
-    
+    let registroErrores = [];
 
     const vaciar = () => {
       document.getElementById("n1").value = "";
     }
 
-    const validate = (tipo) => {
+    // Revisa la caja antes de calcular: si hay un error lo muestra y para la operación
+    const validate = (tipo) => { // tipo puede ser numero o lista
       let texto = document.getElementById("n1").value;
 
       try {
@@ -88,20 +84,19 @@
 
         let lista = texto.split(",");
 
-        if (tipo==="numero" && lista.length > 1) {
-          throw("Esta operación solo funciona con un número, no con una lista");
+        if (tipo === "numero" && lista.length > 1) {
+          throw ("Esta operación solo funciona con un número, no con una lista");
         }
 
         for (let i = 0; i < lista.length; i++) {
-          if (lista[i].split(" ").join("") === "" || isNaN(lista[i])) {            
+          if (lista[i].split(" ").join("") === "" || isNaN(lista[i])) {
             throw (`"${lista[i]}" no es un número válido`);
           }
         }
-
         return true;
 
       } catch (error) {
-        registrarError(error);        
+        registrarError(error);
         return false;
       }
     }
@@ -115,7 +110,7 @@
       num.value = num.value * num.value;
       fill_info("Cuadrado");
     }
-    
+
 
     const inverso = () => {
       if (validate("numero") === false) {
@@ -133,7 +128,7 @@
       }
     }
 
-        
+
     const mod = () => {
       if (validate("numero") === false) {
         return;
@@ -146,9 +141,9 @@
         num.value = x;
       }
       fill_info("Valor absoluto");
-    
+
     }
-    
+
 
     const fact = () => {
       if (validate("numero") === false) {
@@ -163,8 +158,8 @@
         if (x % 1 !== 0) {
           throw ("El factorial solo existe para números enteros");
         }
-        if (x>170) {
-          throw("El factorial es demasiado grande, el máximo es 170");
+        if (x > 170) {
+          throw ("El factorial es demasiado grande, el máximo es 170");
         }
         let resultado = 1;
         for (let i = 2; i <= x; i++) {
@@ -188,28 +183,28 @@
     }
 
     const raiz = () => {
-      if(validate("numero") ===false) {
+      if (validate("numero") === false) {
         return;
       }
       try {
         let num = document.getElementById("n1");
         let x = Number(num.value);
 
-        if (x<0) {
-          throw ("El número es negativo no existe su raíz cuadrada");
+        if (x < 0) {
+          throw ("El número es negativo, no existe su raíz cuadrada");
         }
         if (x === 0) {
           document.getElementById("info").innerHTML = "Info: Operación: Raíz cuadrada. El número es 0, que no es ni positivo ni negativo, y su raíz es 0";
           return;
         }
         num.value = Math.sqrt(x);
-        document.getElementById("info").innerHTML =  `Info: Operación: Raíz Cuadrada: El número ${x} es positivo y su raíz es ${num.value}`;
-      } catch(error) {
+        document.getElementById("info").innerHTML = `Info: Operación: Raíz cuadrada: El número ${x} es positivo y su raíz es ${num.value}`;
+      } catch (error) {
         registrarError(error);
       }
     }
-    
 
+    // Guarda el primer número y la operación en las variables globales para usarlos al pulsar =
     const guardar = (op) => {
       if (validate("numero") === false) {
         return;
@@ -220,7 +215,24 @@
       num.value = "";
     }
 
+    // Cada botón llama a guardar con su operación
+    const addition = () => {
+      guardar("+");
+    }
 
+    const multiplication = () => {
+      guardar("*");
+    }
+
+    const substraction = () => {
+      guardar("-");
+    }
+
+    const division = () => {
+      guardar("/");
+    }
+
+    // Hace la operación guardada con el primer número y el que hay ahora en la caja
     const eq = () => {
       if (validate("numero") === false) {
         return;
@@ -239,142 +251,126 @@
           num.value = operando1 * operando2;
           fill_info("Multiplicación");
 
-        } else if (operacion ==="-") {
+        } else if (operacion === "-") {
           num.value = operando1 - operando2;
           fill_info("Resta");
 
-        } else if (operacion ==="/") {
+        } else if (operacion === "/") {
           if (operando2 === 0) {
-            throw("No se puede dividir entre 0");
+            throw ("No se puede dividir entre 0");
           }
           num.value = operando1 / operando2;
           fill_info("División");
         }
-        operacion = "";
+        operacion = ""; // la borro para que no se repita al volver a pulsar =
       } catch (error) {
         registrarError(error);
       }
     }
 
-    const addition = () => {
-      guardar("+");
-    }
-
-    const multiplication = () => {
-      guardar("*");
-    }
-
-    const substraction = () => {
-      guardar("-");
-    }
-
-    const division = () => {
-      guardar("/");
-    }
-
     const sum = () => {
-        if (validate("lista") === false) {
-            return;
-        }
-        let num = document.getElementById("n1");
-        let lista = num.value.split(",");
-        let total = 0;
+      if (validate("lista") === false) {
+        return;
+      }
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      let total = 0;
 
-        for (let i = 0; i < lista.length; i++) {
-            total = total + Number(lista[i]);
-        }
+      for (let i = 0; i < lista.length; i++) {
+        total = total + Number(lista[i]);
+      }
 
-        num.value = total;
-        fill_info("Suma");
+      num.value = total;
+      fill_info("Suma");
     }
 
 
     const sort = () => {
-        if (validate("lista") === false) {
-            return;
-        }
-        let num = document.getElementById("n1");
-        let lista = num.value.split(",");
-        lista.sort((a, b) => a - b);
-        num.value = lista.join(",");
-        document.getElementById("info").innerHTML = `Info: La lista ordenada de menor a mayor es ${num.value}`;
+      if (validate("lista") === false) {
+        return;
+      }
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      lista.sort((a, b) => a - b);
+      num.value = lista.join(",");
+      document.getElementById("info").innerHTML = `Info: La lista ordenada de menor a mayor es ${num.value}`;
     }
 
 
     const reverse = () => {
-        if (validate("lista") === false ) {
-            return;
-        }
-        let num = document.getElementById("n1");
-        let lista = num.value.split(",");
-        lista.reverse();
-        num.value=lista.join(",")
-        document.getElementById("info").innerHTML = `Info: La lista invertida es ${num.value}`;
+      if (validate("lista") === false) {
+        return;
+      }
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      lista.reverse();
+      num.value = lista.join(",")
+      document.getElementById("info").innerHTML = `Info: La lista invertida es ${num.value}`;
     }
 
 
     const removelast = () => {
-        if (validate("lista") === false ) {
-            return;
-        }
-        let num = document.getElementById("n1");
-        let lista = num.value.split(",");
-        lista.pop();
-        num.value=lista.join(",")
-        document.getElementById("info").innerHTML = `Info: Se ha eliminado el último elemento. La lista queda: ${num.value}`;
+      if (validate("lista") === false) {
+        return;
+      }
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      lista.pop();
+      num.value = lista.join(",")
+      document.getElementById("info").innerHTML = `Info: Se ha eliminado el último elemento. La lista queda: ${num.value}`;
     }
 
 
-    const media =() => {
-        if (validate("lista") === false ) {
-            return;
-        }
-        let num = document.getElementById("n1");
-        let lista = num.value.split(",");
-        let total = 0;
+    const media = () => {
+      if (validate("lista") === false) {
+        return;
+      }
+      let num = document.getElementById("n1");
+      let lista = num.value.split(",");
+      let total = 0;
 
-        for(let i=0; i<lista.length;i++){
-            total=(total + Number(lista[i]))
-        }
+      for (let i = 0; i < lista.length; i++) {
+        total = (total + Number(lista[i]))
+      }
 
-        num.value=total/lista.length;
-        fill_info("Media");
-        }
+      num.value = total / lista.length;
+      fill_info("Media");
+    }
 
-
-    const fill_info = (operacion) => {                        
-      let num = document.getElementById("n1");         
-      let info = document.getElementById("info");      
+    // Escribe en el h2 la operación hecha y si el resultado es menor que 100, entre 100 y 200 o mayor que 200
+    const fill_info = (operacion) => {
+      let num = document.getElementById("n1");
+      let info = document.getElementById("info");
       let resultado = Number(num.value);
       if (resultado === Infinity || resultado === -Infinity) {
-      registrarError("El resultado es demasiado grande o se ha dividido entre 0");
-      return;
-}
-    let texto = `Info: Operación: ${operacion}. El resultado es ${resultado}`;  
+        registrarError("El resultado es demasiado grande o se ha dividido entre 0");
+        return;
+      }
+      let texto = `Info: Operación: ${operacion}. El resultado es ${resultado}`;
       if (resultado < 100) {
         info.innerHTML = `${texto}, menor que 100`;
-      } else if (resultado <= 200){
-        info.innerHTML=`${texto}, está entre 100 y 200`;
+      } else if (resultado <= 200) {
+        info.innerHTML = `${texto}, está entre 100 y 200`;
       } else {
-        info.innerHTML=`${texto}, es mayor que 200`;
-      } 
+        info.innerHTML = `${texto}, es mayor que 200`;
+      }
     }
 
-    const potencia =() => {
-      if(validate("numero") === false) {
+    const potencia = () => {
+      if (validate("numero") === false) {
         return;
       }
       try {
-        let num=document.getElementById("n1");
-        let exp=document.getElementById("exponente");
-        let base=Number(num.value);
+        let num = document.getElementById("n1");
+        let exp = document.getElementById("exponente");
+        let base = Number(num.value);
 
-        if(exp.value==="" || isNaN(exp.value)) {
-          throw("Escribe un número válido en la caja del exponente")
+        if (exp.value === "" || isNaN(exp.value)) {
+          throw ("Escribe un número válido en la caja del exponente")
         }
 
-        let resultado= base ** Number(exp.value);
-        num.value=resultado;
+        let resultado = base ** Number(exp.value);
+        num.value = resultado;
         fill_info("Potencia");
 
       } catch (error) {
@@ -382,36 +378,40 @@
       }
     }
 
-    const eliminarPosicion =() => {
-      if(validate("lista") === false) {
+    // Borra de la lista el elemento de la posición que escribe el usuario
+    const eliminarPosicion = () => {
+      if (validate("lista") === false) {
         return;
       }
       try {
-        let num=document.getElementById("n1");
-        let lista= num.value.split(",");
-        let pos=Number(document.getElementById("posicion").value);
+        let num = document.getElementById("n1");
+        let lista = num.value.split(",");
+        let pos = Number(document.getElementById("posicion").value);
 
-        if(pos<1 || pos > lista.length || pos % 1 !== 0){
-          throw("Escribe una posición válida entre 1 y " + lista.length);
+        if (pos < 1 || pos > lista.length || pos % 1 !== 0) {
+          throw ("Escribe una posición válida entre 1 y " + lista.length);
         }
 
-        lista.splice (pos -1, 1);
+        lista.splice(pos - 1, 1); // pos - 1 porque los arrays empiezan en 0
         num.value = lista.join(",");
         document.getElementById("info").innerHTML = `Info: Se ha eliminado el elemento de la posición ${pos}. La lista queda: ${num.value}`;
 
-      } catch(error) {
+      } catch (error) {
         registrarError(error);
       }
     }
 
-    const resaltar  =(boton) => {
-      if(ultimoBoton !== undefined) {
-        ultimoBoton.style.backgroundColor="";
+    // Pinta el último botón pulsado y le quita el color al anterior
+    const resaltar = (boton) => {
+      // Si antes había otro botón pintado, le quito el color
+      if (ultimoBoton !== undefined) {
+        ultimoBoton.style.backgroundColor = "";
       }
-      boton.style.backgroundColor="palevioletred"
-      ultimoBoton=boton
+      boton.style.backgroundColor = "palevioletred"
+      ultimoBoton = boton
     }
 
+    // Guarda el error con la hora en el registro y lo muestra en el h2
     const registrarError = (error) => {
       let date = new Date();
       let fecha = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
@@ -419,96 +419,117 @@
       document.getElementById("info").innerHTML = "Error: " + error;
     }
 
+    // Enseña todos los errores guardados, uno en cada línea
     const mostrarErrores = () => {
-    if (registroErrores.length === 0) {
-      document.getElementById("info").innerHTML = "Info: No hay errores registrados";
-      return;
+      if (registroErrores.length === 0) {
+        document.getElementById("info").innerHTML = "Info: No hay errores registrados";
+        return;
+      }
+      document.getElementById("info").innerHTML = "Errores registrados:<br>" + registroErrores.join("<br>");
     }
-    document.getElementById("info").innerHTML = "Errores registrados:<br>" + registroErrores.join("<br>");
-  }
+    // Para resaltar el último botón pulsado
+    document.addEventListener("click", (ev) => {
+      if (ev.target.matches("button")) {
+        resaltar(ev.target);
+      }
+    }
+    );
 
-  document.addEventListener("keydown", (ev) => {
-    if (ev.key === "Enter" && ev.target.matches("#n1")) {
-      eq();
+    // Para poder manejarlo desde el teclado
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter" && ev.target.matches("#n1")) {
+        eq();
+      }
+
+      if (ev.key === "*" && ev.target.matches("#n1")) {
+        ev.preventDefault();
+        multiplication();
+      }
+
+      if (ev.key === "+" && ev.target.matches("#n1")) {
+        ev.preventDefault();
+        addition();
+      }
+
+      if (ev.key === "/" && ev.target.matches("#n1")) {
+        ev.preventDefault();
+        division();
+      }
+    }
+    );
+
+    // Abre y cierra las instrucciones
+    const mostrarAyuda = () => {
+      let ayuda = document.getElementById("ayuda");
+      if (ayuda.style.display === "none") {
+        ayuda.style.display = "block";
+      } else {
+        ayuda.style.display = "none";
+      }
     }
 
-    if (ev.key === "*" && ev.target.matches("#n1")) {
-      ev.preventDefault();
-      multiplication();
-    }
+  </script>
+</head>
 
-    if (ev.key === "+" && ev.target.matches("#n1")) {
-      ev.preventDefault();
-      addition();
-    }
+<body>
+  <div class="calculadora">
+    <button id="botonAyuda" onclick="mostrarAyuda()">Cómo usarla</button>
 
-    if (ev.key === "/" && ev.target.matches("#n1")) {
-      ev.preventDefault();
-      division();
-    }
-    }
-  );
+    <div id="ayuda" style="display: none;">
+      <p>Los decimales se escriben con punto (2.5), no con coma</p>
+      <p>Las listas se escriben con comas, sin espacios (4,1,7,3)</p>
+      <p>Para las operaciones binarias: escribe un número, pulsa la operación, escribe el segundo número y pulsa =</p>
+      <p>Para la potencia, escribe la base en la caja de arriba y el exponente en su caja pequeña</p>
+      <p>Para eliminar un elemento de la lista, escribe su posición en la caja pequeña (la 1 es la primera)</p>
 
-    </script>
-    </head>
+    </div>
 
-    <body>
-        <div class="calculadora">
-          <button id="botonAyuda" onclick="mostrarAyuda()">Cómo usarla</button>
+    <h1>Calculadora pequeña</h1>
 
-          <div id="ayuda" style="display: none;">
-            <p>Los decimales se escriben con punto (2.5), no con coma</p>
-            <p>Las listas se escriben con comas, sin espacios (4,1,7,3)</p>
-            <p>Para las operaciones binarias: escribe un número, pulsa la operación, escribe el segundo número y pulsa =</p>
-            <p>Para la potencia, escribe la base en la caja de arriba y el exponente en su caja pequeña</p>
-            <p>Para eliminar un elemento de la lista, escribe su posición en la caja pequeña (la 1 es la primera)</p>
+    Número:
+    <input type="text" id="n1" title="Escribe un número o una lista separada por comas" onclick="vaciar()">
+    <br><br>
 
-          </div>
+    <h3>Operaciones unarias</h3>
+    <p>Escribe un número arriba y pulsa una operación. Para x<sup>y</sup> escribe el exponente en su caja </p>
+    <div class="botones">
+      <button onclick="cuadrado()">x²</button>
+      <button onclick="inverso()"> 1/x </button>
+      <button id="modulo" onclick="mod()"> | x | </button>
+      <button id="factorial" onclick="fact()"> n! </button>
+      <button id="raiz" onclick="raiz()">√</button>
+      <button onclick="cubo()">x³</button>
+      <button onclick="potencia()">xʸ</button>
+      Exponente:<input type="text" id="exponente" title="Escribe aquí el exponente">
+    </div>
 
-            <h1>Calculadora pequeña</h1>
+    <h3>Operaciones binarias</h3>
+    <p>Escribe un número, pulsa la operación, escribe el segundo y pulsa = o la tecla Enter</p>
+    <div class="botones">
+      <button onclick="addition()">+</button>
+      <button onclick="multiplication()">x</button>
+      <button onclick="substraction()">-</button>
+      <button onclick="division()">÷</button>
+      <button onclick="eq()"> = </button>
+    </div>
 
-            Número:
-            <input type="text" id="n1" onclick="vaciar()">
-            <br><br>
+    <h3>Operaciones con csv</h3>
+    <p>Escribe números separados por comas (por ejemplo: 4,6,1,2). Para eliminar uno, escribe su posición (1 es el
+      primero)</p>
+    <div class="botones">
+      <button onclick="sum()">Suma</button>
+      <button onclick="sort()">Ordena</button>
+      <button onclick="reverse()">Invierte</button>
+      <button onclick="removelast()">Elimina último</button>
+      <button onclick="media()">Media </button>
+      <button onclick="eliminarPosicion()">Eliminar posición</button>
+      Posición:<input type="text" id="posicion" title="Escribe la posición del elemento que quieres borrar">
+    </div>
 
-            <h3>Operaciones unarias</h3>
-            <p>Escribe un número arriba y pulsa una operación. Para x<sup>y</sup> escribe el exponente en su caja </p>
-            <div class="botones">
-                <button onclick="cuadrado()">x²</button>
-                <button onclick="inverso()"> 1/x </button>
-                <button id="modulo" onclick="mod()"> | x | </button>  
-                <button id="factorial" onclick="fact()" > n! </button>
-                <button id="raiz" onclick="raiz()">√</button>
-                <button onclick="cubo()">x³</button>
-                <button onclick="potencia()">xʸ</button>
-                Exponente:<input type="text" id="exponente" title="Escribe aquí el exponente">
-            </div>
+    <h2 id="info" class="big" title="Información sobre el número"> Información sobre el número </h2>
+    <button onclick="mostrarErrores()">Ver errores</button>
 
-            <h3>Operaciones binarias</h3>
-            <p>Escribe un número, pulsa la operación, escribe el segundo y pulsa = o la tecla Enter</p>
-            <div class="botones">
-                <button onclick="addition()">+</button>
-                <button onclick="multiplication()">x</button>
-                <button onclick="substraction()">-</button>
-                <button onclick="division()">÷</button>
-                <button onclick="eq()"> = </button>
-            </div>
+  </div>
+</body>
 
-            <h3>Operaciones con csv</h3>
-            <p>Escribe números separados por comas (por ejemplo: 4,6,1,2). Para eliminar uno, escribe su posición (1 es el primero)</p>
-            <div class="botones">
-                <button onclick="sum()">Suma</button>
-                <button onclick="sort()">Ordena</button>
-                <button onclick="reverse()">Invierte</button>
-                <button onclick="removelast()">Elimina último</button>
-                <button onclick="media()">Media </button>
-                <button onclick="eliminarPosicion()">Eliminar posición</button>
-            Posición:<input type="text" id="posicion" title="Escribe la posición del elemento que quieres borrar">
-            </div>
-
-            <h2 id="info" class="big" title="Información sobre el número"> Información sobre el número </h2>
-            <button onclick="mostrarErrores()">Ver errores</button>
-
-        </div>
-    </body>
 </html>
