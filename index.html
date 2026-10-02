@@ -81,7 +81,7 @@
       }
       let num = document.getElementById("n1");
       num.value = num.value * num.value;
-      fill_info();
+      fill_info("Cuadrado");
     }
     
 
@@ -95,7 +95,7 @@
           throw ("No se puede dividir entre 0");
         }
         num.value = 1 / num.value;
-        fill_info();
+        fill_info("Inverso");
       } catch (error) {
         document.getElementById("info").innerHTML = "Error: " + error;
       }
@@ -113,7 +113,7 @@
       } else {
         num.value = x;
       }
-      fill_info();
+      fill_info("Valor absoluto");
     
     }
     
@@ -136,7 +136,7 @@
           resultado = resultado * i;
         }
         num.value = resultado;
-        fill_info();
+        fill_info("Factorial");
       } catch (error) {
         document.getElementById("info").innerHTML = "Error: " + error;
       }
@@ -149,7 +149,7 @@
       }
       let num = document.getElementById("n1");
       num.value = num.value * num.value * num.value;
-      fill_info();
+      fill_info("Cubo");
     }
 
     const guardar = (op) => {
@@ -175,11 +175,14 @@
         }
         if (operacion === "+") {
           num.value = operando1 + operando2;
+          fill_info("Suma");
+
         } else if (operacion === "*") {
           num.value = operando1 * operando2;
+          fill_info("Multiplicación");
+
         }
         operacion = "";
-        fill_info();
       } catch (error) {
         document.getElementById("info").innerHTML = "Error: " + error;
       }
@@ -209,7 +212,7 @@
         }
 
         num.value = total;
-        fill_info();
+        fill_info("Suma");
     }
 
 
@@ -262,22 +265,23 @@
         }
 
         num.value=total/lista.length;
-        fill_info();
+        fill_info("Media");
         }
 
 
-    const fill_info = () => {                        
+    const fill_info = (operacion) => {                        
       let num = document.getElementById("n1");         
       let info = document.getElementById("info");      
-      let resultado = Number(num.value);  
+      let resultado = Number(num.value);
+      let texto = `Info: Operación: ${operacion}. El resultado es ${resultado}`;  
     
 
         if (resultado < 100) {
-        info.innerHTML = `Info: El resultado es ${resultado}, menor que 100`;
+        info.innerHTML = ` ${texto}, menor que 100`;
       } else if (resultado <= 200){
-        info.innerHTML=`Info: El resultado es ${resultado}, esta entre 100 y 200`;
+        info.innerHTML=`${texto}, esta entre 100 y 200`;
       } else {
-        info.innerHTML=`Info: El resultado es ${resultado}, es mayor que 200`;
+        info.innerHTML=` ${texto}, es mayor que 200`;
       } 
     }
 
