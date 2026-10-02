@@ -152,6 +152,25 @@
       fill_info("Cubo");
     }
 
+    const raiz = () => {
+      if(validate("numero") ===false) {
+        return;
+      }
+      try {
+        let num = document.getElementById("n1");
+        let x = Number(num.value);
+
+        if (x<0) {
+          throw ("El número es negativo no existe su raiz cuadrada");
+        }
+        num.value = Math.sqrt(x);
+        document.getElementById("info").innerHTML =  `Info: Operación: Raíz Cuadrada: El número ${x} es positivo y su raíz es ${num.value}`;
+      } catch(error) {
+        document.getElementById("info").innerHTML ="Error: " + error;
+      }
+    }
+    
+
     const guardar = (op) => {
       if (validate("numero") === false) {
         return;
@@ -184,6 +203,13 @@
         } else if (operacion ==="-") {
           num.value = operando1 - operando2;
           fill_info("Resta");
+
+        } else if (operacion ==="/") {
+          num.value = operando1 / operando2;
+          fill_info("División");
+          if (operando2 ==="0"){
+            throw("No se puede dividir por 0")
+          }
         }
         operacion = "";
       } catch (error) {
@@ -201,6 +227,10 @@
 
     const substraction = () => {
       guardar("-")
+    }
+
+    const division = () => {
+      guardar("/")
     }
 
     const sum = () => {
@@ -327,6 +357,7 @@
                 <button onclick="inverso()"> 1/x </button>
                 <button id="modulo" onclick="mod()"> | x | </button>  
                 <button id="factorial" onclick="fact()" > n! </button>
+                <button id="raiz" onclick="raiz()">√</button>
                 <button onclick="cubo()">x<sup>3</sup></button>
             </div>
 
@@ -335,6 +366,7 @@
                 <button onclick="addition()">+</button>
                 <button onclick="multiplication()">x</button>
                 <button onclick="substraction()">-</button>
+                <button onclick="division()">÷</button>
                 <button onclick="eq()"> = </button>
             </div>
 
