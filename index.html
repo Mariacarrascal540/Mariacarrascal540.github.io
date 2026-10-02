@@ -14,13 +14,14 @@
 
     .botones {
       display: flex;
+      align-items: center;
     }
 
     button {
       margin: 4px;
       padding: 10px 15px;
       font-size: 16px;
-      border: 1px;
+      border: none;
       border-radius: 6px;
       background-color: pink;
       color: rgb(45, 129, 111);
@@ -79,7 +80,6 @@
 
     const validate = (tipo) => {
       let texto = document.getElementById("n1").value;
-      let info = document.getElementById("info");
 
       try {
         if (texto === "") {
@@ -89,11 +89,11 @@
         let lista = texto.split(",");
 
         if (tipo==="numero" && lista.length > 1) {
-          throw("Esta operación solo funciona con un número, no con una lista")
+          throw("Esta operación solo funciona con un número, no con una lista");
         }
 
         for (let i = 0; i < lista.length; i++) {
-          if (lista[i] === "" || isNaN(lista[i])) {
+          if (lista[i].split(" ").join("") === "" || isNaN(lista[i])) {            
             throw (`"${lista[i]}" no es un número válido`);
           }
         }
@@ -164,7 +164,7 @@
           throw ("El factorial solo existe para números enteros");
         }
         if (x>170) {
-          throw("El factorial es demasiado grande, el máximo es 170")
+          throw("El factorial es demasiado grande, el máximo es 170");
         }
         let resultado = 1;
         for (let i = 2; i <= x; i++) {
@@ -197,6 +197,10 @@
 
         if (x<0) {
           throw ("El número es negativo no existe su raíz cuadrada");
+        }
+        if (x === 0) {
+          document.getElementById("info").innerHTML = "Info: Operación: Raíz cuadrada. El número es 0, que no es ni positivo ni negativo, y su raíz es 0";
+          return;
         }
         num.value = Math.sqrt(x);
         document.getElementById("info").innerHTML =  `Info: Operación: Raíz Cuadrada: El número ${x} es positivo y su raíz es ${num.value}`;
@@ -253,19 +257,19 @@
     }
 
     const addition = () => {
-      guardar("+")
+      guardar("+");
     }
 
     const multiplication = () => {
-      guardar("*")
+      guardar("*");
     }
 
     const substraction = () => {
-      guardar("-")
+      guardar("-");
     }
 
     const division = () => {
-      guardar("/")
+      guardar("/");
     }
 
     const sum = () => {
@@ -342,15 +346,17 @@
       let num = document.getElementById("n1");         
       let info = document.getElementById("info");      
       let resultado = Number(num.value);
-      let texto = `Info: Operación: ${operacion}. El resultado es ${resultado}`;  
-    
-
-        if (resultado < 100) {
-        info.innerHTML = ` ${texto}, menor que 100`;
+      if (resultado === Infinity || resultado === -Infinity) {
+      registrarError("El resultado es demasiado grande o se ha dividido entre 0");
+      return;
+}
+    let texto = `Info: Operación: ${operacion}. El resultado es ${resultado}`;  
+      if (resultado < 100) {
+        info.innerHTML = `${texto}, menor que 100`;
       } else if (resultado <= 200){
         info.innerHTML=`${texto}, está entre 100 y 200`;
       } else {
-        info.innerHTML=` ${texto}, es mayor que 200`;
+        info.innerHTML=`${texto}, es mayor que 200`;
       } 
     }
 
@@ -421,36 +427,27 @@
     document.getElementById("info").innerHTML = "Errores registrados:<br>" + registroErrores.join("<br>");
   }
 
-    document.addEventListener("keydown", (ev) => {
-
-      if (ev.key === "Enter" && ev.target.matches("#n1")) {
-        eq();
-      }
-
-      if (ev.key === "*") {
-        ev.preventDefault();
-        multiplication();
-      }
-
-      if (ev.key === "+") {
-        ev.preventDefault();
-        addition();
-      }
-
-      if (ev.key === "/") {
-        ev.preventDefault();
-        division();
-      }
-      }
-    );
-    const mostrarAyuda = () => {
-      let ayuda = document.getElementById("ayuda");
-      if (ayuda.style.display === "none") {
-        ayuda.style.display = "block";
-      } else {
-        ayuda.style.display = "none";
-      }
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter" && ev.target.matches("#n1")) {
+      eq();
     }
+
+    if (ev.key === "*" && ev.target.matches("#n1")) {
+      ev.preventDefault();
+      multiplication();
+    }
+
+    if (ev.key === "+" && ev.target.matches("#n1")) {
+      ev.preventDefault();
+      addition();
+    }
+
+    if (ev.key === "/" && ev.target.matches("#n1")) {
+      ev.preventDefault();
+      division();
+    }
+    }
+  );
 
     </script>
     </head>
@@ -470,13 +467,9 @@
 
             <h1>Calculadora pequeña</h1>
 
-    
             Número:
             <input type="text" id="n1" onclick="vaciar()">
             <br><br>
-
-            
-
 
             <h3>Operaciones unarias</h3>
             <p>Escribe un número arriba y pulsa una operación. Para x<sup>y</sup> escribe el exponente en su caja </p>
@@ -490,7 +483,6 @@
                 <button onclick="potencia()">xʸ</button>
                 Exponente:<input type="text" id="exponente" title="Escribe aquí el exponente">
             </div>
-
 
             <h3>Operaciones binarias</h3>
             <p>Escribe un número, pulsa la operación, escribe el segundo y pulsa = o la tecla Enter</p>
