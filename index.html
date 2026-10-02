@@ -7,7 +7,7 @@
 
     .calculadora {
       background-color: rgb(246, 222, 226);
-      width: 600px;
+      width: 700px;
       margin: 40px auto;
       padding: 20px;
     }
@@ -31,6 +31,16 @@
       font-size: 40px;
     }
 
+    #exponente{
+      width: 35px;
+      height: 25px;
+    }
+
+    #posicion {
+      width: 35px;
+      height: 25px;
+  }
+
   </style>
 
     <title>Calculadora pequeña</title><meta charset="utf-8">
@@ -39,6 +49,8 @@
     // Variables globales
     let operando1 = 0;
     let operacion = "";
+
+    let registroErrores=[];
     
 
     const vaciar = () => {
@@ -69,7 +81,7 @@
         return true;
 
       } catch (error) {
-        info.innerHTML = "Error: " + error;
+        registrarError(error);        
         return false;
       }
     }
@@ -97,7 +109,7 @@
         num.value = 1 / num.value;
         fill_info("Inverso");
       } catch (error) {
-        document.getElementById("info").innerHTML = "Error: " + error;
+        registrarError(error);
       }
     }
 
@@ -141,7 +153,7 @@
         num.value = resultado;
         fill_info("Factorial");
       } catch (error) {
-        document.getElementById("info").innerHTML = "Error: " + error;
+        registrarError(error);
       }
     }
 
@@ -169,7 +181,7 @@
         num.value = Math.sqrt(x);
         document.getElementById("info").innerHTML =  `Info: Operación: Raíz Cuadrada: El número ${x} es positivo y su raíz es ${num.value}`;
       } catch(error) {
-        document.getElementById("info").innerHTML ="Error: " + error;
+        registrarError(error);
       }
     }
     
@@ -216,7 +228,7 @@
         }
         operacion = "";
       } catch (error) {
-        document.getElementById("info").innerHTML = "Error: " + error;
+        registrarError(error);
       }
     }
 
@@ -322,6 +334,65 @@
       } 
     }
 
+    const potencia =() => {
+      if(validate("numero") === false) {
+        return;
+      }
+      try {
+        let num=document.getElementById("n1");
+        let exp=document.getElementById("exponente");
+        let base=Number(num.value);
+
+        if(exp.value==="" || isNaN(exp.value)) {
+          throw("Escribe un número válido en la caja del exponente")
+        }
+
+        let resultado= base ** Number(exp.value);
+        num.value=resultado;
+        fill_info("Potencia");
+
+      } catch (error) {
+        registrarError(error);
+      }
+    }
+
+    const eliminarPosicion =() => {
+      if(validate("lista") === false) {
+        return;
+      }
+      try {
+        let num=document.getElementById("n1");
+        let lista= num.value.split(",");
+        let pos=Number(document.getElementById("posicion").value);
+
+        if(pos<1 || pos > lista.length || pos % 1 !== 0){
+          throw("Escribe una posición válida entre 1 y " + lista.length);
+        }
+
+        lista.splice (pos -1, 1);
+        num.value = lista.join(",");
+        document.getElementById("info").innerHTML = `Info: Se ha eliminado el elemento de la posición ${pos}. La lista queda: ${num.value}`;
+
+      } catch(error) {
+        registrarError(error);
+      }
+    }
+
+    const registrarError = (error) => {
+      let date = new Date();
+      let fecha = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+      registroErrores.push(`${fecha} - ${error}`);
+      document.getElementById("info").innerHTML = "Error: " + error;
+    }
+
+    const mostrarErrores = () => {
+    if (registroErrores.length === 0) {
+      document.getElementById("info").innerHTML = "Info: No hay errores registrados";
+      return;
+    }
+    document.getElementById("info").innerHTML = "Errores registrados:<br>" + registroErrores.join("<br>");
+  }
+
     // Para poder manejarlo desde el teclado
     document.addEventListener("keydown",(ev) =>{
 
@@ -354,7 +425,11 @@
             <input type="text" id="n1" onclick="vaciar()">
             <br><br>
 
+            
+
+
             <h3>Operaciones unarias</h3>
+            <p>Escribe un número arriba y pulsa una operación. Para x<sup>y</sup> escribe el exponente en su caja </p>
             <div class="botones">
                 <button onclick="cuadrado()">x<sup>2</sup></button>
                 <button onclick="inverso()"> 1/x </button>
@@ -362,9 +437,13 @@
                 <button id="factorial" onclick="fact()" > n! </button>
                 <button id="raiz" onclick="raiz()">√</button>
                 <button onclick="cubo()">x<sup>3</sup></button>
+                <button onclick="potencia()">x<sup>y</sup></button>
+                Exponente:<input type="text" id="exponente" title="Escribe aquí el exponente">
             </div>
 
+
             <h3>Operaciones binarias</h3>
+            <p>Escribe un número, pulsa la operación, escribe el segundo y pulsa = o la tecla Enter</p>
             <div class="botones">
                 <button onclick="addition()">+</button>
                 <button onclick="multiplication()">x</button>
@@ -374,13 +453,20 @@
             </div>
 
             <h3>Operaciones con csv</h3>
+            <p>Escribe números separados por comas (por ejemplo: 4,6,1,2). Para eliminar uno, escribe su posición (1 es el primero)</p>
             <div class="botones">
                 <button onclick="sum()">Suma</button>
                 <button onclick="sort()">Ordena</button>
                 <button onclick="reverse()">Invierte</button>
                 <button onclick="removelast()">Elimina último</button>
                 <button onclick="media()">Media </button>
+                <button onclick="eliminarPosicion()">Eliminar posición</button>
+            Posición:<input type="text" id="posicion" title="Escribe la posición del elemento que quieres borrar">
             </div>
+
+            <button onclick="mostrarErrores()">Ver errores</button>
+
+            
 
             <h2 id="info" class="big" title="Información sobre el número"> Información sobre el número </h2>
         </div>
