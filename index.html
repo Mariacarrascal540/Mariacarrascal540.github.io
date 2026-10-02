@@ -131,6 +131,9 @@
         if (x % 1 !== 0) {
           throw ("El factorial solo existe para números enteros");
         }
+        if (x>170) {
+          throw("El factorial es demasiado grande, el máximo es 170")
+        }
         let resultado = 1;
         for (let i = 2; i <= x; i++) {
           resultado = resultado * i;
@@ -205,11 +208,11 @@
           fill_info("Resta");
 
         } else if (operacion ==="/") {
+          if (operando2 === 0) {
+            throw("No se puede dividir entre 0");
+          }
           num.value = operando1 / operando2;
           fill_info("División");
-          if (operando2 ==="0"){
-            throw("No se puede dividir por 0")
-          }
         }
         operacion = "";
       } catch (error) {
