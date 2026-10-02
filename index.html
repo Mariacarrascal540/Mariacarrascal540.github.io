@@ -28,17 +28,30 @@
 
     .big {
       color: rgb(93, 71, 75);
-      font-size: 40px;
+      font-size: 24px;
     }
 
-    #exponente{
+    #exponente {
       width: 35px;
       height: 25px;
+      margin: 4px;
     }
 
     #posicion {
       width: 35px;
       height: 25px;
+      margin: 4px;
+  }
+
+    #botonAyuda {
+    float: right;
+  }
+
+    #ayuda {
+    font-size: 13px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 6px;
   }
 
   </style>
@@ -46,13 +59,12 @@
     <title>Calculadora pequeña</title><meta charset="utf-8">
     <script type="text/javascript">
 
-    document.addEventListener("click", (ev) => {
+  document.addEventListener("click", (ev) => {
       if (ev.target.matches("button")) {
         resaltar(ev.target);
-      } else if (ev.target.matches("button sup")) {
-        resaltar(ev.target.parentElement);
       }
-    });
+    }
+  );
 
     // Variables globales
     let operando1 = 0;
@@ -431,12 +443,30 @@
       }
       }
     );
+    const mostrarAyuda = () => {
+      let ayuda = document.getElementById("ayuda");
+      if (ayuda.style.display === "none") {
+        ayuda.style.display = "block";
+      } else {
+        ayuda.style.display = "none";
+      }
+    }
 
     </script>
     </head>
 
     <body>
         <div class="calculadora">
+          <button id="botonAyuda" onclick="mostrarAyuda()">Cómo usarla</button>
+
+          <div id="ayuda" style="display: none;">
+            <p>Los decimales se escriben con punto (2.5), no con coma</p>
+            <p>Las listas se escriben con comas, sin espacios (4,1,7,3)</p>
+            <p>Para las operaciones binarias: escribe un número, pulsa la operación, escribe el segundo número y pulsa =</p>
+            <p>Para la potencia, escribe la base en la caja de arriba y el exponente en su caja pequeña</p>
+            <p>Para eliminar un elemento de la lista, escribe su posición en la caja pequeña (la 1 es la primera)</p>
+
+          </div>
 
             <h1>Calculadora pequeña</h1>
 
@@ -451,13 +481,13 @@
             <h3>Operaciones unarias</h3>
             <p>Escribe un número arriba y pulsa una operación. Para x<sup>y</sup> escribe el exponente en su caja </p>
             <div class="botones">
-                <button onclick="cuadrado()">x<sup>2</sup></button>
+                <button onclick="cuadrado()">x²</button>
                 <button onclick="inverso()"> 1/x </button>
                 <button id="modulo" onclick="mod()"> | x | </button>  
                 <button id="factorial" onclick="fact()" > n! </button>
                 <button id="raiz" onclick="raiz()">√</button>
-                <button onclick="cubo()">x<sup>3</sup></button>
-                <button onclick="potencia()">x<sup>y</sup></button>
+                <button onclick="cubo()">x³</button>
+                <button onclick="potencia()">xʸ</button>
                 Exponente:<input type="text" id="exponente" title="Escribe aquí el exponente">
             </div>
 
@@ -484,11 +514,9 @@
             Posición:<input type="text" id="posicion" title="Escribe la posición del elemento que quieres borrar">
             </div>
 
+            <h2 id="info" class="big" title="Información sobre el número"> Información sobre el número </h2>
             <button onclick="mostrarErrores()">Ver errores</button>
 
-            
-
-            <h2 id="info" class="big" title="Información sobre el número"> Información sobre el número </h2>
         </div>
     </body>
 </html>
