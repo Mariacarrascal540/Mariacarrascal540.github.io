@@ -171,7 +171,7 @@
         let num = document.getElementById("n1");
         let operando2 = Number(num.value);
         if (operacion === "") {
-          throw ("Primero tienes que elegir una operación (+ o x)");
+          throw ("Primero tienes que elegir una operación (+ / x / -)");
         }
         if (operacion === "+") {
           num.value = operando1 + operando2;
@@ -181,6 +181,9 @@
           num.value = operando1 * operando2;
           fill_info("Multiplicación");
 
+        } else if (operacion ==="-") {
+          num.value = operando1 - operando2;
+          fill_info("Resta");
         }
         operacion = "";
       } catch (error) {
@@ -188,16 +191,17 @@
       }
     }
 
+    const addition = () => {
+      guardar("+")
+    }
 
     const multiplication = () => {
       guardar("*")
     }
 
-
-    const addition = () => {
-      guardar("+")
+    const substraction = () => {
+      guardar("-")
     }
-
 
     const sum = () => {
         if (validate("lista") === false) {
@@ -279,7 +283,7 @@
         if (resultado < 100) {
         info.innerHTML = ` ${texto}, menor que 100`;
       } else if (resultado <= 200){
-        info.innerHTML=`${texto}, esta entre 100 y 200`;
+        info.innerHTML=`${texto}, está entre 100 y 200`;
       } else {
         info.innerHTML=` ${texto}, es mayor que 200`;
       } 
@@ -330,6 +334,7 @@
             <div class="botones">
                 <button onclick="addition()">+</button>
                 <button onclick="multiplication()">x</button>
+                <button onclick="substraction()">-</button>
                 <button onclick="eq()"> = </button>
             </div>
 
