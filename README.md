@@ -1,6 +1,6 @@
 # Calculadora pequeña
 ## Enlace a la web: 
-https://mariacarrascal540.github.io
+https://mariacarrascal540.github.io/
 
 ## Descripción de las funcionalidades
 
